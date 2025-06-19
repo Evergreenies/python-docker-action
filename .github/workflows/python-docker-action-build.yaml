@@ -1,0 +1,22 @@
+name: build and publish image to dockerhub
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - Dockerfile
+
+jobs:
+  publish_images:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+      - name: build
+        run: |
+          docker build . -t suyogshimpi/python-docker-github-action-demo:latest
+      - name: push to dockerhub
+        run: |
+          docker login -u suyogshimpi -p ${{ secrets.DOCKER_HUB_TOKEN }}
+          docker push suyogshimpi/python-docker-github-action-demo:latest
